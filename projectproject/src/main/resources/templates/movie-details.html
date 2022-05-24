@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Movie Details</title>
+</head>
+<body>
+<h1 th:text="'Movie name is:' + ${ #strings.toUpperCase(movie.movieName) }"></h1>
+<h4 th:text="'Total Tickets is:' + ${ #strings.toUpperCase(movie.totalTickets) }"></h4>
+<hr>
+<a th:href="@{/api/movies/list}">Back to Movie List</a>
+<hr>
+<a th:href="@{/api/cinephiles/list}">Click to see all cinephiles in this movie</a>
+</body>
+</html>

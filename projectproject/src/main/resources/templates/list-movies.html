@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Movies Directory</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="container">
+        <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+        <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+    </div>
+
+    <div sec:authorize="isAuthenticated()">
+        Welcome <b><span sec:authentication="name">Username</span></b>
+        &nbsp;
+        <i><span sec:authentication="principal.authorities">Roles</span></i>
+    </div>
+
+    <h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h3>
+
+    <h3>Movie Directory</h3>
+    <hr>
+    <div sec:authorize="hasAnyAuthority('ADMIN')">
+        <a th:href="@{/api/movies/showFormForAdd}"
+           class="btn btn-primary btn-sm mb-3">
+            Add Movie
+         </a>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Movie Name</th>
+            <th>Total Tickets</th>
+            <div sec:authorize="hasAnyAuthority('ADMIN')">
+                <th>Action</th>
+            </div>
+           <!-- <div sec:authorize="hasAnyAuthority('USER')">
+                <th>Add Movie to List</th>
+            </div> -->
+            <th>View Movie Details</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempMovie : ${movie}">
+
+            <td th:text="${tempMovie.movieName}" />
+            <td th:text="${tempMovie.totalTickets}" />
+
+            <div sec:authorize="hasAnyAuthority('ADMIN')">
+
+                <td>
+                    <div class="row">
+
+                        <div class="col-small">
+                            <!-- Add "update" button/link -->
+                            <form action="#" th:action="@{/api/movies/showFormForUpdate}" method="POST">
+
+                                <input type="hidden" name="movieId" th:value="${tempMovie.id}" />
+                                <button type="submit" class="btn btn-info btn-sm ml-3 mr-1">Update</button>
+
+                            </form>
+                        </div>
+
+                        <div class="col-small">
+                            <!-- Add "delete" button/link -->
+                            <form action="#" th:action="@{/api/movies/delete}" method="POST">
+
+                                <input type="hidden" name="movieId" th:value="${tempMovie.id}" />
+                                <button type="submit" class="btn btn-danger btn-sm"
+                                        onclick="if (!(confirm('Are you sure you want to delete this Movie?'))) return false">
+                                    Delete
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </td>
+
+            </div>
+
+           <!-- <div sec:authorize="hasAnyAuthority('USER')">
+                <td>
+                    <div class="row">
+
+                        <div class="col-small">
+                            Add "update" button/link
+                            <form action="#" th:action="@{/api/movies/register}" method="POST">
+
+                                <input type="hidden" name="movieId" th:value="${tempMovie.id}" />
+                                <button type="submit" class="btn btn-info btn-sm ml-3 mr-1">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </div> -->
+
+            <td>
+                <div class="row">
+
+                    <div class="col-small">
+                        <!-- Add "update" button/link -->
+                        <form action="#" th:action="@{/api/movies/movieDetails}" method="POST">
+
+                            <input type="hidden" name="movieId" th:value="${tempMovie.id}" />
+                            <button type="submit" class="btn btn-info btn-sm ml-3 mr-1">View Details</button>
+
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout" />
+    </form>
+</div>
+
+<hr>
+
+<hr>
+
+<div sec:authorize="hasAnyAuthority('ADMIN')">
+    <div class="container my-3">
+        <a th:href="@{/api/users/list}">See List of All Users</a>
+    </div>
+</div>
+</body>
+</html>

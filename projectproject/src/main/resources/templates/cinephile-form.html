@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymleaf-extras-springsecurity5">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <style>
+        .error {
+           color: red;
+        }
+    </style>
+
+    <title>Add Cinephile</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="container">
+        <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+        <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+    </div>
+
+    <h3>Add Cinephile's Directory</h3>
+    <hr>
+
+    <p class="h4 mb-4">Save Cinephile</p>
+
+    <form action="#" th:action="@{/api/cinephiles/save}"
+          th:object="${cinephile}" method="POST">
+
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{id}" />
+
+        <input type="text" th:field="*{cinephileName}"
+               class="form-control mb-4 col-4" placeholder="Cinephile name">
+        <ul>
+            <li th:each="err : ${#fields.errors('cinephileName')}" th:text="${err}" class="error" />
+        </ul>
+
+        <input type="text" th:field="*{seatNumber}"
+               class="form-control mb-4 col-4" placeholder="Seat Number">
+        <ul>
+            <li th:each="err : ${#fields.errors('seatNumber')}" th:text="${err}" class="error" />
+        </ul>
+
+        <button type="submit" class="btn btn-info col-2">Save</button>
+
+    </form>
+
+    <hr>
+    <a th:href="@{/api/cinephiles/list}">Back to Cinephile List</a>
+
+</div>
+</body>
+
+</html>
